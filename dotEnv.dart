@@ -8,8 +8,8 @@ class LoadEnv {
 
   Map<String, dynamic> _valores = {};
 
-  Map get valores {
-    carregaEnv();
+  Future<Map> get valores async {
+    await carregaEnv();
     return _valores;
   }
 
@@ -30,7 +30,6 @@ class LoadEnv {
       await for (var line in lines) {
         separaChaveValor(line, this._valores);
       }
-      print('File is now closed.');
     } catch (e) {
       print('Error: $e');
     }
@@ -79,6 +78,9 @@ class LoadEnv {
 
 Future<void> main() async {
   var env = LoadEnv('.env');
-  await env.carregaEnv();
-  print(env.valores["ambiente"]);
+  Map valores = await env.valores;
+  print(valores['password']);
+  print(valores['ano']);
+
+  print(valores['validaCpf'] is bool);
 }
